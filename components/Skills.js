@@ -35,7 +35,7 @@ function Skills() {
     const tools = [
       { name: 'Git & GitHub', icon: 'icon-github',url:'https://github.com/' },
       { name: 'VS Code', icon: 'icon-code', url:'https://code.visualstudio.com/' },
-      { name: 'Docker', icon: 'icon-package',ur:'https://www.docker.com/' },
+      { name: 'Docker', icon: 'icon-package',url:'https://www.docker.com/' },
       { name: 'Jupyter Notebook', icon: 'icon-notebook', url: 'https://jupyter.org/' },
       { name: 'Colab', icon: 'icon-cloud',url:'https://colab.research.google.com/' },
       { name: 'Anaconda', icon: 'icon-box' , url:'https://anaconda.org/'},

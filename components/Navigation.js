@@ -64,7 +64,7 @@ function Navigation() {
             <div className="w-9 h-9 rounded-lg bg-blue-600/20 flex items-center justify-center border border-blue-500/30 group-hover:bg-blue-600/40 transition-all">
               <span className="text-blue-400 text-lg">E</span>
             </div>
-            <span className="tracking-tight text-blue-400">Esha Mirza<span className="text-blue-400">.</span></span>
+            <span className="tracking-tight text-blue-400">Esha Mirza</span>
           </div>
 
           {/* Desktop Menu */}
