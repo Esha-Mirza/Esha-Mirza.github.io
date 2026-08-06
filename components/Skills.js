@@ -1,7 +1,10 @@
 function Skills() {
   try {
     const [activeCategory, setActiveCategory] = React.useState('Core');
+    const [displayCategory, setDisplayCategory] = React.useState('Core');
     const [isVisible, setIsVisible] = React.useState(false);
+    const [isTransitioning, setIsTransitioning] = React.useState(false);
+    const transitionTimerRef = React.useRef(null);
 
     const skillData = {
       'Core': [
@@ -62,11 +65,37 @@ function Skills() {
     }, []);
 
     const handleCategoryChange = (cat) => {
+      if (cat === activeCategory) return;
       setActiveCategory(cat);
+      setIsTransitioning(true);
+      if (transitionTimerRef.current) clearTimeout(transitionTimerRef.current);
+      transitionTimerRef.current = setTimeout(() => {
+        setDisplayCategory(cat);
+        setIsTransitioning(false);
+      }, 220);
     };
+
+    React.useEffect(() => {
+      return () => {
+        if (transitionTimerRef.current) clearTimeout(transitionTimerRef.current);
+      };
+    }, []);
 
     return (
       <section id="skills" className="py-20 px-6" data-name="skills" data-file="components/Skills.js">
+        <style>{`
+          .skills-category-crossfade {
+            transition: opacity 0.28s ease-in-out, transform 0.28s ease-in-out;
+          }
+          .skills-category-crossfade.is-transitioning {
+            opacity: 0;
+            transform: translateY(8px);
+          }
+          .skills-category-crossfade.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        `}</style>
         <div className="container mx-auto max-w-6xl">
           <h2 className="text-4xl font-bold text-center mb-16 lofi-text">Technical Expertise</h2>
           
@@ -95,9 +124,11 @@ function Skills() {
                   ))}
                 </div>
 
-                <div className="space-y-8 flex-1">
-                  {skillData[activeCategory].map((skill, index) => (
-                    <div key={`${activeCategory}-${skill.name}`} className="relative">
+                <div
+                  className={`space-y-8 flex-1 skills-category-crossfade ${isTransitioning ? 'is-transitioning' : 'is-visible'}`}
+                >
+                  {skillData[displayCategory].map((skill, index) => (
+                    <div key={`${displayCategory}-${skill.name}`} className="relative">
                       <div className="flex justify-between items-center mb-2">
                         <div className="flex items-center gap-3">
                             <div className={`${skill.icon} text-lg text-blue-400`}></div>
@@ -109,7 +140,7 @@ function Skills() {
                         <div
                           className="skill-progress h-full bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.6)] transition-all duration-1000 ease-out"
                           style={{ 
-                            width: isVisible ? `${skill.level}%` : '0%',
+                            width: isVisible && !isTransitioning ? `${skill.level}%` : '0%',
                             transitionDelay: `${index * 100}ms`
                           }}
                         ></div>
@@ -130,18 +161,15 @@ function Skills() {
                 
                 <div className="grid grid-cols-2 gap-4 flex-1 content-start">
                   {tools.map((tool) => (
-                    <a 
+                    <div 
                       key={tool.name} 
-                      href={tool.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-4 p-4 rounded-xl glassmorphism border border-white/5 hover:border-blue-500/40 hover:bg-white/5 transition-all group cursor-pointer block"
+                      className="flex items-center gap-4 p-4 rounded-xl glassmorphism border border-white/5 hover:border-blue-500/40 hover:bg-white/5 transition-all group"
                     >
                       <div className="flex items-center gap-3">
                         <div className={`${tool.icon} text-xl text-blue-400 group-hover:scale-110 transition-transform`}></div>
                         <p className="text-gray-300 text-[10px] font-bold uppercase tracking-tight group-hover:text-blue-300 transition-colors">{tool.name}</p>
                       </div>
-                    </a>
+                    </div>
                   ))}
                 </div>
                 

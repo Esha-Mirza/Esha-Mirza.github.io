@@ -2,6 +2,16 @@ function Contact() {
   try {
     const [status, setStatus] = React.useState('idle');
     const [formData, setFormData] = React.useState({ name: '', email: '', msg: '' });
+    const [showCV, setShowCV] = React.useState(false);
+
+    React.useEffect(() => {
+      if (!showCV) return;
+      const handleKeyDown = (e) => {
+        if (e.key === 'Escape') setShowCV(false);
+      };
+      document.addEventListener('keydown', handleKeyDown);
+      return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [showCV]);
 
     const RECEIVING_EMAIL = 'esha101374@gmail.com';
 
@@ -122,13 +132,12 @@ function Contact() {
                   <div className="icon-terminal text-blue-600"></div>
                   Input_Protocol.v1
                 </h3>
-                <a
-                  href="/assets/Esha_Mirza_Resume.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest bg-blue-900/20 text-blue-400 border border-blue-800/40 px-4 py-2 rounded hover:bg-blue-800/40 transition-all">
+                <button
+                  type="button"
+                  onClick={() => setShowCV(true)}
+                  className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest bg-blue-900/20 text-blue-400 border border-blue-800/40 px-4 py-2 rounded hover:bg-blue-800/40 transition-all cursor-pointer">
                   <div className="icon-file-text"></div> View_CV
-                </a>
+                </button>
               </div>
 
               <form className="space-y-8 relative">
@@ -267,6 +276,52 @@ function Contact() {
               </form>
             </div>
 
+          </div>
+        </div>
+
+        {/* View_CV smooth popup */}
+        <div
+          onClick={() => setShowCV(false)}
+          className={`fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-950/80 backdrop-blur-sm transition-opacity duration-300 ${
+            showCV ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          }`}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className={`bg-[#020617] border border-blue-900/40 rounded-2xl w-full max-w-3xl h-[85vh] overflow-hidden shadow-2xl shadow-blue-950/30 transition-all duration-300 flex flex-col ${
+              showCV ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+            }`}
+          >
+            <div className="flex items-center justify-between px-6 py-4 border-b border-blue-900/30">
+              <h3 className="text-sm font-bold text-white uppercase tracking-widest flex items-center gap-2">
+                <div className="icon-file-text text-blue-500"></div> Esha_Mirza_Resume.pdf
+              </h3>
+              <div className="flex items-center gap-4">
+                <a
+                  href="/assets/Esha_Mirza_Resume.pdf"
+                  download
+                  className="text-[10px] font-bold uppercase tracking-widest text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-2"
+                >
+                  <div className="icon-download"></div> Download
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setShowCV(false)}
+                  aria-label="Close CV preview"
+                  title="Close"
+                  className="icon-x text-base text-slate-500 hover:text-blue-400 transition-colors cursor-pointer bg-transparent border-0 p-0"
+                ></button>
+              </div>
+            </div>
+            <div className="flex-1 bg-slate-900">
+              {showCV && (
+                <iframe
+                  src="/assets/Esha_Mirza_Resume.pdf"
+                  title="Esha Mirza Resume"
+                  className="w-full h-full border-0"
+                ></iframe>
+              )}
+            </div>
           </div>
         </div>
       </section>

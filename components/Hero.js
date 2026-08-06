@@ -2,6 +2,12 @@ function Hero() {
   try {
     const [typedCode, setTypedCode] = React.useState('');
     const [activeLine, setActiveLine] = React.useState(0);
+    const [replayKey, setReplayKey] = React.useState(0);
+    const [isMaximized, setIsMaximized] = React.useState(false);
+    const [isFlipped, setIsFlipped] = React.useState(false);
+    const [showResumeCard, setShowResumeCard] = React.useState(false);
+    const [scanFill, setScanFill] = React.useState(false);
+    const [scanVerified, setScanVerified] = React.useState(false);
     
     const codeLines = [
      " import neural_engine as ai",
@@ -19,6 +25,9 @@ function Hero() {
       let currentLine = 0;
       let currentChar = 0;
       let interval;
+
+      setTypedCode('');
+      setActiveLine(0);
 
       const typeEffect = () => {
         if (currentLine < codeLines.length) {
@@ -49,7 +58,45 @@ function Hero() {
 
       interval = setInterval(typeEffect, 50);
       return () => clearInterval(interval);
-    }, []);
+    }, [replayKey]);
+
+    React.useEffect(() => {
+      if (!isMaximized) return;
+      const handleKeyDown = (e) => {
+        if (e.key === 'Escape') setIsMaximized(false);
+      };
+      document.addEventListener('keydown', handleKeyDown);
+      return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [isMaximized]);
+
+    React.useEffect(() => {
+      if (!showResumeCard) return;
+      const handleKeyDown = (e) => {
+        if (e.key === 'Escape') setShowResumeCard(false);
+      };
+      document.addEventListener('keydown', handleKeyDown);
+      return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [showResumeCard]);
+
+    React.useEffect(() => {
+      if (!showResumeCard) return;
+      setScanFill(false);
+      setScanVerified(false);
+      const fillTimer = setTimeout(() => setScanFill(true), 100);
+      const verifyTimer = setTimeout(() => setScanVerified(true), 1100);
+      return () => {
+        clearTimeout(fillTimer);
+        clearTimeout(verifyTimer);
+      };
+    }, [showResumeCard]);
+
+    const confirmResumeDownload = () => {
+      const link = document.createElement('a');
+      link.href = '/assets/Esha_Mirza_Resume.pdf';
+      link.download = 'Esha_Mirza_Resume.pdf';
+      link.click();
+      setShowResumeCard(false);
+    };
 
     return (
       <section id="home" className="min-h-screen pt-32 pb-20 flex items-center justify-center overflow-hidden relative" data-name="hero" data-file="components/Hero.js">
@@ -105,46 +152,91 @@ function Hero() {
             {/* Middle Row: The Technical Interface & Mission */}
             <div className="grid lg:grid-cols-12 gap-8 items-stretch">
               {/* Left Interface: Code Stream */}
-              <div className="lg:col-span-7 relative group">
-                <div className="h-full glassmorphism overflow-hidden border-white/5 group-hover:border-blue-500/20 transition-all duration-500">
-                  <div className="bg-slate-900/40 px-5 py-3 flex items-center justify-between border-b border-white/5">
-                    <div className="flex items-center gap-3">
-                      <div className="flex gap-1.5">
-                        <div className="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
-                        <div className="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
-                        <div className="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
+              <div className="lg:col-span-7 relative group" style={{ perspective: '2000px' }}>
+                <div
+                  className="relative h-full transition-transform duration-700 ease-in-out"
+                  style={{ transformStyle: 'preserve-3d', transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)' }}
+                >
+                  {/* FRONT FACE: consciousness.py console */}
+                  <div
+                    className="h-full glassmorphism overflow-hidden border-white/5 group-hover:border-blue-500/20 transition-all duration-500"
+                    style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
+                  >
+                    <div className="bg-slate-900/40 px-5 py-3 flex items-center justify-between border-b border-white/5">
+                      <div className="flex items-center gap-3">
+                        <div className="flex gap-1.5">
+                          <div className="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
+                          <div className="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
+                          <div className="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
+                        </div>
+                        <span className="text-[10px] font-mono text-slate-500">src/core/consciousness.py</span>
                       </div>
-                      <span className="text-[10px] font-mono text-slate-500">src/core/consciousness.py</span>
+                      <div className="flex gap-4">
+                        <button
+                          type="button"
+                          onClick={() => setIsFlipped(true)}
+                          aria-label="Flip card"
+                          title="Flip"
+                          className="icon-refresh-cw text-[10px] text-blue-500/40 hover:text-blue-400 transition-all duration-300 cursor-pointer bg-transparent border-0 p-0"
+                        ></button>
+                        <button
+                          type="button"
+                          onClick={() => setIsMaximized(true)}
+                          aria-label="Expand code view"
+                          title="Maximize"
+                          className="icon-maximize-2 text-[10px] text-slate-600 hover:text-blue-400 transition-colors cursor-pointer bg-transparent border-0 p-0"
+                        ></button>
+                      </div>
                     </div>
-                    <div className="flex gap-4">
-                      <div className="icon-refresh-cw text-[10px] text-blue-500/40"></div>
-                      <div className="icon-maximize-2 text-[10px] text-slate-600"></div>
+                    <div className="p-6 md:p-10 font-mono text-sm md:text-base leading-relaxed overflow-hidden">
+                      <div className="flex gap-6">
+                        <div className="flex flex-col gap-1 text-slate-700 text-right select-none text-xs pt-1">
+                          {[...Array(10)].map((_, i) => <span key={i}>{String(i + 1).padStart(2, '0')}</span>)}
+                        </div>
+                        <div className="text-blue-200/90 whitespace-pre">
+                          {typedCode}
+                          <span className="w-2 h-5 bg-blue-500 inline-block animate-pulse ml-1 align-middle"></span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="bg-blue-600/5 px-6 py-4 border-t border-white/5 flex flex-wrap gap-6 items-center">
+                      <div className="flex items-center gap-2">
+                         <div className="icon-layers text-blue-500/60 text-xs"></div>
+                         <span className="text-[9px] uppercase tracking-widest font-bold text-slate-500">Architecture: <span className="text-blue-400">Modular_V3</span></span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                         <div className="icon-cpu text-blue-500/60 text-xs"></div>
+                         <span className="text-[9px] uppercase tracking-widest font-bold text-slate-500">Engine: <span className="text-blue-400">Neural_Flow</span></span>
+                      </div>
+                      <div className="ml-auto flex items-center gap-2 px-3 py-1 rounded bg-green-500/10 border border-green-500/20">
+                         <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-ping"></div>
+                         <span className="text-[9px] uppercase tracking-widest font-bold text-green-500">Live_Stream</span>
+                      </div>
                     </div>
                   </div>
-                  <div className="p-6 md:p-10 font-mono text-sm md:text-base leading-relaxed overflow-hidden">
-                    <div className="flex gap-6">
-                      <div className="flex flex-col gap-1 text-slate-700 text-right select-none text-xs pt-1">
-                        {[...Array(10)].map((_, i) => <span key={i}>{String(i + 1).padStart(2, '0')}</span>)}
-                      </div>
-                      <div className="text-blue-200/90 whitespace-pre">
-                        {typedCode}
-                        <span className="w-2 h-5 bg-blue-500 inline-block animate-pulse ml-1 align-middle"></span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="bg-blue-600/5 px-6 py-4 border-t border-white/5 flex flex-wrap gap-6 items-center">
-                    <div className="flex items-center gap-2">
-                       <div className="icon-layers text-blue-500/60 text-xs"></div>
-                       <span className="text-[9px] uppercase tracking-widest font-bold text-slate-500">Architecture: <span className="text-blue-400">Modular_V3</span></span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                       <div className="icon-cpu text-blue-500/60 text-xs"></div>
-                       <span className="text-[9px] uppercase tracking-widest font-bold text-slate-500">Engine: <span className="text-blue-400">Neural_Flow</span></span>
-                    </div>
-                    <div className="ml-auto flex items-center gap-2 px-3 py-1 rounded bg-green-500/10 border border-green-500/20">
-                       <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-ping"></div>
-                       <span className="text-[9px] uppercase tracking-widest font-bold text-green-500">Live_Stream</span>
-                    </div>
+
+                  {/* BACK FACE: laptop-lid logo panel */}
+                  <div
+                    onClick={() => setIsFlipped(false)}
+                    className="absolute inset-0 h-full glassmorphism overflow-hidden border-white/5 flex flex-col items-center justify-center cursor-pointer bg-gradient-to-br from-slate-900 via-slate-950 to-black"
+                    style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+                  >
+                    <button
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); setIsFlipped(false); }}
+                      aria-label="Flip back"
+                      title="Flip back"
+                      className="icon-refresh-cw absolute top-5 right-5 text-[10px] text-slate-600 hover:text-blue-400 transition-colors cursor-pointer bg-transparent border-0 p-0"
+                    ></button>
+                    <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 50% 40%, rgba(59,130,246,0.25), transparent 60%)' }}></div>
+                    <div className="absolute inset-0 opacity-[0.06] pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(115deg, #fff 0px, transparent 1px, transparent 3px)' }}></div>
+                    <img
+                      src="/assets/images/logo-b.png"
+                      alt="Esha Mirza logo"
+                      className="w-24 h-24 md:w-32 md:h-32 rounded-full shadow-[0_0_50px_rgba(59,130,246,0.35)] relative z-10"
+                    />
+                    <span className="mt-6 text-[10px] font-mono text-slate-500 uppercase tracking-[0.4em] relative z-10">Esha Mirza</span>
+                    <span className="mt-1 text-[8px] font-mono text-slate-700 uppercase tracking-[0.3em] relative z-10">Click to flip back</span>
                   </div>
                 </div>
               </div>
@@ -175,10 +267,7 @@ function Hero() {
                      <span className="icon-message-circle"></span> Initiate Connection 
                     </button>
 
-                    <button onClick={() => { const link = document.createElement('a');
-                     link.href = '/assets/Esha_Mirza_Resume.pdf';
-                     link.download = 'Esha_Mirza_Resume.pdf';
-                     link.click();}}
+                    <button onClick={() => setShowResumeCard(true)}
                      className="px-8 py-4 bg-white/5 border border-white/10 text-white font-bold rounded-2xl hover:bg-white/10 hover:border-blue-500/30 transition-all flex items-center gap-3">
                      <span className="icon-download"></span> Resume
                     </button>
@@ -204,6 +293,109 @@ function Hero() {
             <div className="absolute top-3/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent"></div>
             <div className="absolute left-1/4 top-0 h-full w-px bg-gradient-to-b from-transparent via-blue-500/20 to-transparent"></div>
             <div className="absolute left-3/4 top-0 h-full w-px bg-gradient-to-b from-transparent via-blue-500/20 to-transparent"></div>
+          </div>
+        </div>
+
+        {/* Maximize modal for the consciousness.py panel */}
+        <div
+          onClick={() => setIsMaximized(false)}
+          className={`fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-950/80 backdrop-blur-sm transition-opacity duration-300 ${
+            isMaximized ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          }`}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className={`glassmorphism w-full max-w-3xl max-h-[80vh] overflow-hidden border-blue-500/20 transition-all duration-300 ${
+              isMaximized ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+            }`}
+          >
+            <div className="bg-slate-900/60 px-5 py-3 flex items-center justify-between border-b border-white/5">
+              <div className="flex items-center gap-3">
+                <div className="flex gap-1.5">
+                  <div className="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
+                  <div className="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
+                  <div className="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
+                </div>
+                <span className="text-[10px] font-mono text-slate-500">src/core/consciousness.py</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsMaximized(false)}
+                aria-label="Close expanded view"
+                title="Close"
+                className="icon-x text-sm text-slate-500 hover:text-blue-400 transition-colors cursor-pointer bg-transparent border-0 p-0"
+              ></button>
+            </div>
+            <div className="p-6 md:p-10 font-mono text-sm md:text-base leading-relaxed overflow-auto max-h-[calc(80vh-56px)]">
+              <div className="flex gap-6">
+                <div className="flex flex-col gap-1 text-slate-700 text-right select-none text-xs pt-1">
+                  {codeLines.map((_, i) => <span key={i}>{String(i + 1).padStart(2, '0')}</span>)}
+                </div>
+                <div className="text-blue-200/90 whitespace-pre">
+                  {codeLines.join('\n')}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Resume: Curriculum Vitae confirm-download popup */}
+        <div
+          onClick={() => setShowResumeCard(false)}
+          className={`fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-950/80 backdrop-blur-sm transition-opacity duration-300 ${
+            showResumeCard ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          }`}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className={`bg-[#0a1222] border border-blue-900/40 rounded-2xl w-full max-w-md p-6 md:p-8 shadow-2xl shadow-blue-950/30 transition-all duration-300 relative ${
+              showResumeCard ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+            }`}
+          >
+            <button
+              type="button"
+              onClick={() => setShowResumeCard(false)}
+              aria-label="Close"
+              title="Close"
+              className="icon-x absolute top-6 right-6 text-lg text-slate-500 hover:text-blue-400 transition-colors cursor-pointer bg-transparent border-0 p-0"
+            ></button>
+
+            <div className="flex items-start gap-4 mb-6">
+              <div className="w-12 h-12 rounded-xl bg-blue-600/15 border border-blue-500/30 flex items-center justify-center flex-shrink-0">
+                <div className="icon-file-text text-xl text-blue-400"></div>
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white leading-tight">Curriculum Vitae</h3>
+                <p className="text-[11px] font-mono text-blue-400 tracking-wide mt-1">ESHA_MIRZA_RESUME.PDF</p>
+              </div>
+            </div>
+
+            <p className="text-slate-400 text-sm leading-relaxed mb-6">
+              Detailed technical experience, project breakdown, and comprehensive skill assessment for Esha Mirza.
+            </p>
+
+            <div className="bg-white/5 border border-white/5 rounded-xl px-4 py-4 mb-6">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[9px] font-bold uppercase tracking-widest text-slate-500">Security_Scan</span>
+                <span className={`text-[9px] font-bold uppercase tracking-widest transition-colors duration-300 ${scanVerified ? 'text-green-500' : 'text-slate-500'}`}>
+                  {scanVerified ? 'Verified' : 'Scanning...'}
+                </span>
+              </div>
+              <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
+                <div
+                  className="h-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.6)] transition-all duration-1000 ease-out"
+                  style={{ width: scanFill ? '100%' : '0%' }}
+                ></div>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={confirmResumeDownload}
+              className="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-3 hover:shadow-[0_0_30px_rgba(59,130,246,0.4)]"
+            >
+              Confirm Download <span className="icon-download"></span>
+            </button>
           </div>
         </div>
       </section>
