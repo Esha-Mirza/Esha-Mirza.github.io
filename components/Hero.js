@@ -80,7 +80,7 @@ function Hero() {
                 <div className="w-40 h-40 md:w-56 md:h-56 p-1 glassmorphism rounded-3xl overflow-hidden lofi-glow transition-all duration-700 hover:rotate-2">
                   <div className="w-full h-full rounded-2xl overflow-hidden relative">
                     <img 
-                      src="assets/images/hero-b.png" 
+                      src="/assets/images/hero-b.png" 
                       alt="Identity"
                       className="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-700"
                     />
