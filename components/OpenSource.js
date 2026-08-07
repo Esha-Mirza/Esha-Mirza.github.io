@@ -36,7 +36,7 @@ function OpenSource() {
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors font-semibold group"
             >
-              View all repositories <div className="icon-arrow-right text-lg group-hover:translate-x-1 transition-transform"></div>
+              View more <div className="icon-arrow-right text-lg group-hover:translate-x-1 transition-transform"></div>
             </a>
           </div>
           

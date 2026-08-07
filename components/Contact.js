@@ -61,7 +61,7 @@ function Contact() {
       },
       {
         label: 'Upwork',
-        value: 'Freelancer Profile',
+        value: 'Esha M.',
         url: 'https://www.upwork.com/freelancers/~01d58e69574b649cd1?mp_source=share',
         icon: 'icon-pen',
         color: 'text-blue-300'

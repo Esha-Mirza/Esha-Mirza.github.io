@@ -6,21 +6,21 @@ function Certifications() {
         issuer: 'IBM SkillsBuild',
         date: '2026',
         icon: 'icon-brain',
-        url: 'https://skills.yourlearning.ibm.com/credential/CREDLY-29bdaec3-af04-458e-a70e-2e6fa78c5dd5'
+        url: 'https://www.credly.com/badges/11dafadf-1b56-4fbd-bcd6-df6795c1709d/public_url'
       },
       {
         title: 'Generative AI in Action',
         issuer: 'IBM SkillsBuild',
         date: '2026',
         icon: 'icon-sparkles',
-        url: 'https://skills.yourlearning.ibm.com/credential/CREDLY-6dddb2ad-cc46-4b09-ae65-41001f8d62a5'
+        url: 'https://www.credly.com/badges/c19f5c19-ab8b-4c94-801f-b9084a606a30/public_url'
       },
       {
         title: 'Build an AI Agent',
         issuer: 'IBM SkillsBuild',
         date: '2026',
         icon: 'icon-bot',
-        url: 'https://skills.yourlearning.ibm.com/credential/CREDLY-3dfee891-aad9-4890-856d-d7c1472b7a4e'
+        url: 'https://www.credly.com/badges/8ba89b56-b995-4f1c-b270-20c7e47d60ec/public_url'
       },
       {
         title: 'Python Essential 1',
@@ -30,16 +30,18 @@ function Certifications() {
         url: 'https://www.credly.com/badges/0cd4eb01-4faf-4cda-927e-b49f659cef46/public_url'
       },
       {
-        title: 'AWS AI Practitioner Challenge',
+        title: 'Chainguard AI/ML Guardian ',
         issuer: 'Udacity',
         date: '2026',
-        icon: 'icon-cloud'
+        icon: 'icon-cloud',
+        url: 'https://www.credly.com/badges/02508c6c-fc80-484e-b61e-0cd3883d0d77/public_url'
       },
       {
-        title: 'Generative AI Application Developer',
+        title: 'Retrieval-Augmented Generation for Enhanced AI Outputs',
         issuer: 'ULEF,HEC',
         date: '2026',
-        icon: 'icon-star'
+        icon: 'icon-star',
+        url:'https://www.credly.com/badges/381d8a51-21f5-479a-b1da-6778cfeb18db/public_url'
       }
     ];
 
@@ -393,6 +395,64 @@ function Certifications() {
             pointer-events: none;
           }
 
+          .cert-credly-wrap {
+            display: flex;
+            justify-content: center;
+            margin-top: 46px;
+          }
+
+          .cert-credly-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 32px;
+            border: 1px solid rgba(96,165,250,0.28);
+            border-radius: 999px;
+            background: linear-gradient(145deg, rgba(59,130,246,0.14), rgba(59,130,246,0.03));
+            color: #bfdbfe;
+            font-family: monospace;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            overflow: hidden;
+            transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+          }
+
+          .cert-credly-btn::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(147,197,253,0.25), transparent);
+            transform: translateX(-120%);
+            transition: transform 0.7s ease;
+          }
+
+          .cert-credly-btn:hover {
+            border-color: rgba(147,197,253,0.6);
+            background: linear-gradient(145deg, rgba(59,130,246,0.22), rgba(59,130,246,0.06));
+            box-shadow: 0 12px 40px rgba(59,130,246,0.22), 0 0 0 1px rgba(96,165,250,0.15);
+            transform: translateY(-3px);
+          }
+
+          .cert-credly-btn:hover::before {
+            transform: translateX(120%);
+          }
+
+          .cert-credly-icon {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(59,130,246,0.18);
+            color: #93c5fd;
+            font-size: 13px;
+            flex-shrink: 0;
+          }
+
           @media (max-width: 1024px) {
             .cert-grid {
               grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -503,6 +563,21 @@ function Certifications() {
                
               </article>
             ))}
+          </div>
+
+          <div className="cert-credly-wrap">
+            <a
+              href="https://www.credly.com/users/esha-mirza/edit/badges/credly"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="cert-credly-btn"
+            >
+              <span className="cert-credly-icon">
+                <div className="icon-award"></div>
+              </span>
+              View Full Credential Wallet on Credly
+              <div className="icon-arrow-right text-sm"></div>
+            </a>
           </div>
         </div>
       </section>

@@ -60,11 +60,21 @@ function Projects() {
     return (
       <section id="projects" className="section-spacing" data-name="projects" data-file="components/Projects.js">
         <div className="container mx-auto max-w-6xl px-4">
-          <div className="mb-12">
-            <h2 className="text-4xl font-bold lofi-text mb-4 text-center md:text-left">Featured Projects</h2>
-            <p className="text-gray-400 max-w-2xl text-center md:text-left">
-              Exploring the boundaries of AI and Engineering through practical, hands-on development.
-            </p>
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+            <div>
+              <h2 className="text-4xl font-bold lofi-text mb-4">Featured Projects</h2>
+              <p className="text-gray-400 max-w-2xl">
+                Exploring the boundaries of AI and Engineering through practical, hands-on development.
+              </p>
+            </div>
+            <a 
+              href="https://github.com/Esha-Mirza?tab=repositories" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors font-semibold group"
+            >
+              View all repositories <div className="icon-arrow-right text-lg group-hover:translate-x-1 transition-transform"></div>
+            </a>
           </div>
           
           <div className="grid md:grid-cols-1 lg:grid-cols-3 gap-8">
