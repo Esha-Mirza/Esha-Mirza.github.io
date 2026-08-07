@@ -6,8 +6,6 @@ function Hero() {
     const [isMaximized, setIsMaximized] = React.useState(false);
     const [isFlipped, setIsFlipped] = React.useState(false);
     const [showResumeCard, setShowResumeCard] = React.useState(false);
-    const [scanFill, setScanFill] = React.useState(false);
-    const [scanVerified, setScanVerified] = React.useState(false);
     
     const codeLines = [
      " import neural_engine as ai",
@@ -77,26 +75,6 @@ function Hero() {
       document.addEventListener('keydown', handleKeyDown);
       return () => document.removeEventListener('keydown', handleKeyDown);
     }, [showResumeCard]);
-
-    React.useEffect(() => {
-      if (!showResumeCard) return;
-      setScanFill(false);
-      setScanVerified(false);
-      const fillTimer = setTimeout(() => setScanFill(true), 100);
-      const verifyTimer = setTimeout(() => setScanVerified(true), 1100);
-      return () => {
-        clearTimeout(fillTimer);
-        clearTimeout(verifyTimer);
-      };
-    }, [showResumeCard]);
-
-    const confirmResumeDownload = () => {
-      const link = document.createElement('a');
-      link.href = '/assets/Esha_Mirza_Resume.pdf';
-      link.download = 'Esha_Mirza_Resume.pdf';
-      link.click();
-      setShowResumeCard(false);
-    };
 
     return (
       <section id="home" className="min-h-screen pt-32 pb-20 flex items-center justify-center overflow-hidden relative" data-name="hero" data-file="components/Hero.js">
@@ -269,7 +247,7 @@ function Hero() {
 
                     <button onClick={() => setShowResumeCard(true)}
                      className="px-8 py-4 bg-white/5 border border-white/10 text-white font-bold rounded-2xl hover:bg-white/10 hover:border-blue-500/30 transition-all flex items-center gap-3">
-                     <span className="icon-download"></span> Resume
+                     <span className="icon-eye"></span> View CV
                     </button>
                   </div>
                 </div>
@@ -339,7 +317,7 @@ function Hero() {
           </div>
         </div>
 
-        {/* Resume: Curriculum Vitae confirm-download popup */}
+        {/* Resume: readable CV preview popup */}
         <div
           onClick={() => setShowResumeCard(false)}
           className={`fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-950/80 backdrop-blur-sm transition-opacity duration-300 ${
@@ -348,54 +326,31 @@ function Hero() {
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className={`bg-[#0a1222] border border-blue-900/40 rounded-2xl w-full max-w-md p-6 md:p-8 shadow-2xl shadow-blue-950/30 transition-all duration-300 relative ${
+            className={`bg-[#020617] border border-blue-900/40 rounded-2xl w-full max-w-4xl h-[90vh] overflow-hidden shadow-2xl shadow-blue-950/30 transition-all duration-300 flex flex-col ${
               showResumeCard ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
             }`}
           >
-            <button
-              type="button"
-              onClick={() => setShowResumeCard(false)}
-              aria-label="Close"
-              title="Close"
-              className="icon-x absolute top-6 right-6 text-lg text-slate-500 hover:text-blue-400 transition-colors cursor-pointer bg-transparent border-0 p-0"
-            ></button>
-
-            <div className="flex items-start gap-4 mb-6">
-              <div className="w-12 h-12 rounded-xl bg-blue-600/15 border border-blue-500/30 flex items-center justify-center flex-shrink-0">
-                <div className="icon-file-text text-xl text-blue-400"></div>
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-white leading-tight">Curriculum Vitae</h3>
-                <p className="text-[11px] font-mono text-blue-400 tracking-wide mt-1">ESHA_MIRZA_RESUME.PDF</p>
-              </div>
+            <div className="flex items-center justify-between px-6 py-4 border-b border-blue-900/30">
+              <h3 className="text-sm font-bold text-white uppercase tracking-widest flex items-center gap-2">
+                <div className="icon-file-text text-blue-500"></div> Esha_Mirza_Resume.pdf
+              </h3>
+              <button
+                type="button"
+                onClick={() => setShowResumeCard(false)}
+                aria-label="Close CV preview"
+                title="Close"
+                className="icon-x text-base text-slate-500 hover:text-blue-400 transition-colors cursor-pointer bg-transparent border-0 p-0"
+              ></button>
             </div>
-
-            <p className="text-slate-400 text-sm leading-relaxed mb-6">
-              Detailed technical experience, project breakdown, and comprehensive skill assessment for Esha Mirza.
-            </p>
-
-            <div className="bg-white/5 border border-white/5 rounded-xl px-4 py-4 mb-6">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[9px] font-bold uppercase tracking-widest text-slate-500">Security_Scan</span>
-                <span className={`text-[9px] font-bold uppercase tracking-widest transition-colors duration-300 ${scanVerified ? 'text-green-500' : 'text-slate-500'}`}>
-                  {scanVerified ? 'Verified' : 'Scanning...'}
-                </span>
-              </div>
-              <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
-                <div
-                  className="h-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.6)] transition-all duration-1000 ease-out"
-                  style={{ width: scanFill ? '100%' : '0%' }}
-                ></div>
-              </div>
+            <div className="flex-1 bg-slate-900">
+              {showResumeCard && (
+                <iframe
+                  src="/assets/Esha_Mirza_Resume.pdf#toolbar=1&navpanes=0&scrollbar=1&zoom=page-width"
+                  title="Esha Mirza Resume"
+                  className="w-full h-full border-0"
+                ></iframe>
+              )}
             </div>
-
-            <button
-              type="button"
-              onClick={confirmResumeDownload}
-              className="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-3 hover:shadow-[0_0_30px_rgba(59,130,246,0.4)]"
-            >
-              Confirm Download <span className="icon-download"></span>
-            </button>
           </div>
         </div>
       </section>

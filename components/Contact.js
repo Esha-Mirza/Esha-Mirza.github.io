@@ -3,6 +3,8 @@ function Contact() {
     const [status, setStatus] = React.useState('idle');
     const [formData, setFormData] = React.useState({ name: '', email: '', msg: '' });
     const [showCV, setShowCV] = React.useState(false);
+    const [scanFill, setScanFill] = React.useState(false);
+    const [scanVerified, setScanVerified] = React.useState(false);
 
     React.useEffect(() => {
       if (!showCV) return;
@@ -12,6 +14,26 @@ function Contact() {
       document.addEventListener('keydown', handleKeyDown);
       return () => document.removeEventListener('keydown', handleKeyDown);
     }, [showCV]);
+
+    React.useEffect(() => {
+      if (!showCV) return;
+      setScanFill(false);
+      setScanVerified(false);
+      const fillTimer = setTimeout(() => setScanFill(true), 100);
+      const verifyTimer = setTimeout(() => setScanVerified(true), 1100);
+      return () => {
+        clearTimeout(fillTimer);
+        clearTimeout(verifyTimer);
+      };
+    }, [showCV]);
+
+    const confirmCVDownload = () => {
+      const link = document.createElement('a');
+      link.href = '/assets/Esha_Mirza_Resume.pdf';
+      link.download = 'Esha_Mirza_Resume.pdf';
+      link.click();
+      setShowCV(false);
+    };
 
     const RECEIVING_EMAIL = 'esha101374@gmail.com';
 
@@ -136,7 +158,7 @@ function Contact() {
                   type="button"
                   onClick={() => setShowCV(true)}
                   className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest bg-blue-900/20 text-blue-400 border border-blue-800/40 px-4 py-2 rounded hover:bg-blue-800/40 transition-all cursor-pointer">
-                  <div className="icon-file-text"></div> View_CV
+                  <div className="icon-download"></div> Resume
                 </button>
               </div>
 
@@ -279,7 +301,7 @@ function Contact() {
           </div>
         </div>
 
-        {/* View_CV smooth popup */}
+        {/* View_CV: Curriculum Vitae confirm-download popup */}
         <div
           onClick={() => setShowCV(false)}
           className={`fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-950/80 backdrop-blur-sm transition-opacity duration-300 ${
@@ -288,40 +310,54 @@ function Contact() {
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className={`bg-[#020617] border border-blue-900/40 rounded-2xl w-full max-w-3xl h-[85vh] overflow-hidden shadow-2xl shadow-blue-950/30 transition-all duration-300 flex flex-col ${
+            className={`bg-[#0a1222] border border-blue-900/40 rounded-2xl w-full max-w-md p-6 md:p-8 shadow-2xl shadow-blue-950/30 transition-all duration-300 relative ${
               showCV ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
             }`}
           >
-            <div className="flex items-center justify-between px-6 py-4 border-b border-blue-900/30">
-              <h3 className="text-sm font-bold text-white uppercase tracking-widest flex items-center gap-2">
-                <div className="icon-file-text text-blue-500"></div> Esha_Mirza_Resume.pdf
-              </h3>
-              <div className="flex items-center gap-4">
-                <a
-                  href="/assets/Esha_Mirza_Resume.pdf"
-                  download
-                  className="text-[10px] font-bold uppercase tracking-widest text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-2"
-                >
-                  <div className="icon-download"></div> Download
-                </a>
-                <button
-                  type="button"
-                  onClick={() => setShowCV(false)}
-                  aria-label="Close CV preview"
-                  title="Close"
-                  className="icon-x text-base text-slate-500 hover:text-blue-400 transition-colors cursor-pointer bg-transparent border-0 p-0"
-                ></button>
+            <button
+              type="button"
+              onClick={() => setShowCV(false)}
+              aria-label="Close"
+              title="Close"
+              className="icon-x absolute top-6 right-6 text-lg text-slate-500 hover:text-blue-400 transition-colors cursor-pointer bg-transparent border-0 p-0"
+            ></button>
+
+            <div className="flex items-start gap-4 mb-6">
+              <div className="w-12 h-12 rounded-xl bg-blue-600/15 border border-blue-500/30 flex items-center justify-center flex-shrink-0">
+                <div className="icon-file-text text-xl text-blue-400"></div>
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white leading-tight">Curriculum Vitae</h3>
+                <p className="text-[11px] font-mono text-blue-400 tracking-wide mt-1">ESHA_MIRZA_RESUME.PDF</p>
               </div>
             </div>
-            <div className="flex-1 bg-slate-900">
-              {showCV && (
-                <iframe
-                  src="/assets/Esha_Mirza_Resume.pdf"
-                  title="Esha Mirza Resume"
-                  className="w-full h-full border-0"
-                ></iframe>
-              )}
+
+            <p className="text-slate-400 text-sm leading-relaxed mb-6">
+              Detailed technical experience, project breakdown, and comprehensive skill assessment for Esha Mirza.
+            </p>
+
+            <div className="bg-white/5 border border-white/5 rounded-xl px-4 py-4 mb-6">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[9px] font-bold uppercase tracking-widest text-slate-500">Security_Scan</span>
+                <span className={`text-[9px] font-bold uppercase tracking-widest transition-colors duration-300 ${scanVerified ? 'text-green-500' : 'text-slate-500'}`}>
+                  {scanVerified ? 'Verified' : 'Scanning...'}
+                </span>
+              </div>
+              <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
+                <div
+                  className="h-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.6)] transition-all duration-1000 ease-out"
+                  style={{ width: scanFill ? '100%' : '0%' }}
+                ></div>
+              </div>
             </div>
+
+            <button
+              type="button"
+              onClick={confirmCVDownload}
+              className="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-3 hover:shadow-[0_0_30px_rgba(59,130,246,0.4)]"
+            >
+              Confirm Download <span className="icon-download"></span>
+            </button>
           </div>
         </div>
       </section>
