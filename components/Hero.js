@@ -255,7 +255,6 @@ function Hero() {
                       className="w-24 h-24 md:w-32 md:h-32 rounded-full shadow-[0_0_50px_rgba(59,130,246,0.35)] relative z-10"
                     />
                     <span className="mt-6 text-[10px] font-mono text-slate-500 uppercase tracking-[0.4em] relative z-10">Esha Mirza</span>
-                    <span className="mt-1 text-[8px] font-mono text-slate-700 uppercase tracking-[0.3em] relative z-10">Click to flip back</span>
                   </div>
                 </div>
               </div>

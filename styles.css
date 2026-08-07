@@ -8,7 +8,7 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  background: linear-gradient(rgba(0, 5, 20, 0.8), rgba(0, 5, 20, 0.8)), 
+  background: linear-gradient(rgba(0, 3, 14, 0.88), rgba(0, 3, 14, 0.88)), 
               url('assets/images/background.jfif');
   background-size: cover;
   background-attachment: fixed;
@@ -23,11 +23,11 @@ html {
 }
 
 .glassmorphism {
-  background: rgba(10, 20, 40, 0.7);
+  background: rgba(6, 11, 24, 0.84);
   backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
 .nav-pill-glow {
@@ -40,8 +40,9 @@ html {
 }
 
 .nav-transition {
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+              padding 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+              top 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .nav-container-transition {
@@ -148,7 +149,7 @@ button:focus {
 /* Technical Expertise section: HUD-style panel */
 .skills-panel {
   position: relative;
-  background: rgba(8, 15, 30, 0.65);
+  background: rgba(6, 11, 24, 0.84);
   backdrop-filter: blur(18px);
   border: 1px solid rgba(59, 130, 246, 0.14);
   border-radius: 6px;

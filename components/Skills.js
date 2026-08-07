@@ -143,11 +143,6 @@ function Skills() {
             {/* Column 1: Technical Skills */}
             <div className="flex-[3]">
               <div className="skills-panel p-8 md:p-10 h-full flex flex-col">
-                <span className="skills-corner tl"></span>
-                <span className="skills-corner tr"></span>
-                <span className="skills-corner bl"></span>
-                <span className="skills-corner br"></span>
-
                 <h3 className="text-2xl font-semibold mb-8 text-blue-300 flex items-center gap-3">
                   <div className="icon-brain text-2xl text-blue-400"></div>
                   Technical Skills
@@ -190,11 +185,6 @@ function Skills() {
             {/* Column 2: Developer Toolbox */}
             <div className="flex-[2] flex flex-col gap-8">
               <div className="skills-panel p-8 md:p-10 h-full flex flex-col">
-                <span className="skills-corner tl"></span>
-                <span className="skills-corner tr"></span>
-                <span className="skills-corner bl"></span>
-                <span className="skills-corner br"></span>
-
                 <h3 className="text-2xl font-semibold mb-8 text-blue-300 flex items-center gap-3">
                   <div className="icon-wrench text-2xl text-blue-400"></div>
                   Developer Toolbox
