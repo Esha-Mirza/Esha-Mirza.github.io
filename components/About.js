@@ -7,7 +7,28 @@ function About() {
     ];
 
     return (
-      <section id="about" className="py-32 relative overflow-hidden" data-name="about" data-file="components/About.js">
+      <section id="about" className="py-32 relative overflow-hidden scroll-reveal" data-name="about" data-file="components/About.js">
+        <style>{`
+          @keyframes aboutBadgeGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(59,130,246,0.25), inset 0 0 15px rgba(59,130,246,0.08); }
+            50% { box-shadow: 0 0 34px rgba(59,130,246,0.55), inset 0 0 20px rgba(59,130,246,0.18); }
+          }
+          .protocol-badge {
+            animation: aboutBadgeGlow 3s ease-in-out infinite;
+          }
+          @keyframes aboutShimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+          }
+          .protocol-shimmer-text {
+            background: linear-gradient(90deg, #ffffff 20%, #93c5fd 45%, #ffffff 70%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: aboutShimmer 3.5s linear infinite;
+          }
+        `}</style>
         <div className="container mx-auto max-w-7xl px-6 relative z-10">
           <div className="flex flex-col lg:flex-row gap-20">
             
@@ -32,10 +53,10 @@ function About() {
                 <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-indigo-600/10 rounded-full blur-3xl animate-pulse delay-700"></div>
                 
                 {/* Floating Label Badge */}
-                <div className="absolute -bottom-6 -right-6 glassmorphism px-6 py-4 border-blue-500/30 lofi-glow rotate-3 hidden md:block">
+                <div className="absolute -bottom-6 -right-6 glassmorphism px-6 py-4 border-blue-500/30 lofi-glow protocol-badge rotate-3 hidden md:block">
                   <div className="flex flex-col">
                     <span className="text-[10px] font-mono text-blue-400 font-black uppercase tracking-widest">Protocol</span>
-                    <span className="text-white font-bold text-lg">AI_ARCHITECT</span>
+                    <span className="protocol-shimmer-text font-bold text-lg">AI_ARCHITECT</span>
                   </div>
                 </div>
               </div>
@@ -102,10 +123,16 @@ function About() {
                 <div className="mt-12 pt-8 border-t border-white/5 flex flex-wrap gap-10">
                    <div className="flex flex-col">
                       <span className="text-[10px] font-mono text-slate-500 uppercase font-black tracking-widest mb-1">Status</span>
-                      <div className="flex items-center gap-2">
+                      <a
+                        href="https://www.upwork.com/freelancers/~01d58e69574b649cd1?mp_source=share"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 group w-fit"
+                      >
                         <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)] animate-pulse"></div>
-                        <span className="text-white font-bold text-sm uppercase">Freelancer at Upwork</span>
-                      </div>
+                        <span className="text-white font-bold text-sm uppercase group-hover:text-blue-400 transition-colors underline decoration-transparent group-hover:decoration-blue-400 underline-offset-4">Freelancer at Upwork</span>
+                        <div className="icon-external-link text-[10px] text-slate-500 group-hover:text-blue-400 transition-colors"></div>
+                      </a>
                    </div>
                    <div className="flex flex-col">
                       <span className="text-[10px] font-mono text-slate-500 uppercase font-black tracking-widest mb-1">Origin</span>

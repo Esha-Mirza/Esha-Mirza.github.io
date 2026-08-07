@@ -6,6 +6,9 @@ function Hero() {
     const [isMaximized, setIsMaximized] = React.useState(false);
     const [isFlipped, setIsFlipped] = React.useState(false);
     const [showResumeCard, setShowResumeCard] = React.useState(false);
+    const [statsVisible, setStatsVisible] = React.useState(false);
+    const [agentCount, setAgentCount] = React.useState(0);
+    const [credCount, setCredCount] = React.useState(0);
     
     const codeLines = [
      " import neural_engine as ai",
@@ -75,6 +78,44 @@ function Hero() {
       document.addEventListener('keydown', handleKeyDown);
       return () => document.removeEventListener('keydown', handleKeyDown);
     }, [showResumeCard]);
+
+    React.useEffect(() => {
+      const el = document.getElementById('core-focus-panel');
+      if (!el) return;
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setStatsVisible(true);
+            observer.disconnect();
+          }
+        },
+        { threshold: 0.4 }
+      );
+      observer.observe(el);
+      return () => observer.disconnect();
+    }, []);
+
+    React.useEffect(() => {
+      if (!statsVisible) return;
+      const animateCount = (target, setter) => {
+        const duration = 1200;
+        const start = performance.now();
+        const step = (now) => {
+          const progress = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          setter(Math.round(eased * target));
+          if (progress < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      };
+      animateCount(25, setAgentCount);
+      animateCount(15, setCredCount);
+    }, [statsVisible]);
+
+    const scrollToContact = () => {
+      const el = document.getElementById('contact');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    };
 
     return (
       <section id="home" className="min-h-screen pt-32 pb-20 flex items-center justify-center overflow-hidden relative" data-name="hero" data-file="components/Hero.js">
@@ -166,7 +207,7 @@ function Hero() {
                         ></button>
                       </div>
                     </div>
-                    <div className="p-6 md:p-10 font-mono text-sm md:text-base leading-relaxed overflow-hidden">
+                    <div className="p-6 md:p-10 font-mono text-sm md:text-base leading-relaxed overflow-hidden min-h-[280px] md:min-h-[320px]">
                       <div className="flex gap-6">
                         <div className="flex flex-col gap-1 text-slate-700 text-right select-none text-xs pt-1">
                           {[...Array(10)].map((_, i) => <span key={i}>{String(i + 1).padStart(2, '0')}</span>)}
@@ -221,27 +262,30 @@ function Hero() {
 
               {/* Right Interface: Bio & Stats Grid */}
               <div className="lg:col-span-5 flex flex-col gap-8">
-                <div className="glassmorphism p-8 flex-1 border-white/5 hover:border-blue-500/30 transition-all group">
-                   <h3 className="text-xs font-black text-blue-500 uppercase tracking-[0.4em] mb-4">Core_Focus</h3>
-                   <p className="text-2xl md:text-3xl font-bold text-slate-100 mb-8 leading-tight">
-                    From concept to  <span className="italic text-blue-400">Production</span> , that's where I like to <span className="italic text-blue-400">Build, Break, </span> and <span className="italic text-blue-400">Learn</span>
+                <div id="core-focus-panel" className="relative glassmorphism p-8 flex-1 border-white/5 hover:border-blue-500/30 hover:-translate-y-1 transition-all duration-500 group overflow-hidden">
+                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 30% 20%, rgba(59,130,246,0.12), transparent 55%)' }}></div>
+                   <h3 className="relative text-xs font-black text-blue-500 uppercase tracking-[0.4em] mb-4 flex items-center gap-2">
+                     Core_Focus
+                     <span className="w-1.5 h-1.5 rounded-full bg-blue-500 group-hover:animate-ping"></span>
+                   </h3>
+                   <p className="relative text-2xl md:text-3xl font-bold text-slate-100 mb-8 leading-tight">
+                    From concept to  <span className="italic text-blue-400 hover:text-blue-300 transition-colors cursor-default">Production</span> , that's where I like to <span className="italic text-blue-400 hover:text-blue-300 transition-colors cursor-default">Build, Break, </span> and <span className="italic text-blue-400 hover:text-blue-300 transition-colors cursor-default">Learn</span>
                    </p>
                    
-                   <div className="grid grid-cols-2 gap-4 mb-8">
-                      <div className="p-4 bg-white/5 border border-white/5 rounded-2xl group-hover:border-blue-500/20 transition-all">
-                         <div className="text-3xl font-black text-white mb-1">25+</div>
+                   <div className="relative grid grid-cols-2 gap-4 mb-8">
+                      <div className="p-4 bg-white/5 border border-white/5 rounded-2xl group-hover:border-blue-500/20 hover:!border-blue-400/50 hover:bg-blue-500/10 hover:scale-[1.03] transition-all">
+                         <div className="text-3xl font-black text-white mb-1">{agentCount}+</div>
                          <div className="text-[9px] uppercase font-bold text-slate-500 tracking-widest">AI Agents</div>
                       </div>
-                      <div className="p-4 bg-white/5 border border-white/5 rounded-2xl group-hover:border-blue-500/20 transition-all">
-                         <div className="text-3xl font-black text-white mb-1">15+</div>
+                      <div className="p-4 bg-white/5 border border-white/5 rounded-2xl group-hover:border-blue-500/20 hover:!border-blue-400/50 hover:bg-blue-500/10 hover:scale-[1.03] transition-all">
+                         <div className="text-3xl font-black text-white mb-1">{credCount}+</div>
                          <div className="text-[9px] uppercase font-bold text-slate-500 tracking-widest">Credentials</div>
                       </div>
                    </div>
 
-                   <div className="flex flex-wrap gap-4">
-                    <button onClick={() => {
-                     window.open('https://mail.google.com/mail/?view=cm&fs=1&to=esha101374@gmail.com&su=AI/ML%20Collaboration','_blank');}}
-                     className="px-8 py-4 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-500 hover:shadow-[0_0_30px_rgba(59,130,246,0.4)] transition-all flex items-center gap-3">
+                   <div className="relative flex flex-wrap gap-4">
+                    <button onClick={scrollToContact}
+                     className="px-8 py-4 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-500 hover:shadow-[0_0_30px_rgba(59,130,246,0.4)] hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-3">
                      <span className="icon-message-circle"></span> Initiate Connection 
                     </button>
 

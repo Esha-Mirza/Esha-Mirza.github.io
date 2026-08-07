@@ -37,6 +37,25 @@ class ErrorBoundary extends React.Component {
 
 function App() {
   try {
+    React.useEffect(() => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-revealed');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: '0px 0px -60px 0px' }
+      );
+
+      const targets = document.querySelectorAll('.scroll-reveal');
+      targets.forEach((el) => observer.observe(el));
+
+      return () => observer.disconnect();
+    }, []);
+
     return (
       <ErrorBoundary>
         <div className="App" data-name="app" data-file="app.js">

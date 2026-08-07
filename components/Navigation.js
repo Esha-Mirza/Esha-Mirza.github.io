@@ -16,21 +16,37 @@ function Navigation() {
     ];
 
     React.useEffect(() => {
+      let ticking = false;
       const handleScroll = () => {
-        setIsScrolled(window.scrollY > 20);
-        
-        const sections = navItems.map(item => document.getElementById(item.id));
-        const currentSection = sections.find(section => {
-          if (!section) return false;
-          const rect = section.getBoundingClientRect();
-          return rect.top <= 150 && rect.bottom >= 150;
-        });
-        
-        if (currentSection) setActiveSection(currentSection.id);
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            setIsScrolled(window.scrollY > 20);
+            ticking = false;
+          });
+          ticking = true;
+        }
       };
 
-      window.addEventListener('scroll', handleScroll);
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      handleScroll();
       return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    React.useEffect(() => {
+      const sections = navItems.map(item => document.getElementById(item.id)).filter(Boolean);
+      if (!sections.length) return;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) setActiveSection(entry.target.id);
+          });
+        },
+        { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
+      );
+
+      sections.forEach(section => observer.observe(section));
+      return () => observer.disconnect();
     }, []);
 
     const scrollToSection = (sectionId) => {
@@ -50,10 +66,10 @@ function Navigation() {
         data-name="navigation" 
         data-file="components/Navigation.js"
       >
-        <div className={`nav-container-transition flex items-center ${
+        <div className={`nav-container-transition flex items-center border ${
           isScrolled 
-            ? 'bg-white/5 backdrop-blur-md nav-pill-glow border border-white/10 px-4 py-2.5 rounded-xl shadow-2xl max-w-fit gap-8' 
-            : 'container mx-auto justify-between bg-transparent'
+            ? 'bg-white/5 backdrop-blur-md nav-pill-glow border-white/10 px-4 py-2.5 rounded-xl shadow-2xl max-w-fit gap-8' 
+            : 'container mx-auto justify-between bg-transparent border-transparent'
         }`}>
           <div 
             className={`font-bold lofi-text cursor-pointer flex items-center gap-3 group transition-all duration-500 ease-in-out ${

@@ -1,3 +1,26 @@
+function SkillRow({ skill, index, active }) {
+  return (
+    <div className="group">
+      <div className="flex items-center gap-3 mb-2.5">
+        <div className="w-9 h-9 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center flex-shrink-0 group-hover:border-blue-500/40 group-hover:bg-blue-500/15 transition-all">
+          <div className={`${skill.icon} text-base text-blue-300`}></div>
+        </div>
+        <span className="text-sm font-bold text-white uppercase tracking-wide flex-1 truncate">{skill.name}</span>
+        <span className="text-blue-400 font-mono text-xs font-bold flex-shrink-0">{skill.level}%</span>
+      </div>
+      <div className="h-2 rounded-full bg-white/5 overflow-hidden">
+        <div
+          className="h-full rounded-full bg-gradient-to-r from-blue-600 to-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.55)] transition-all duration-1000 ease-out"
+          style={{
+            width: active ? `${skill.level}%` : '0%',
+            transitionDelay: `${index * 100}ms`
+          }}
+        ></div>
+      </div>
+    </div>
+  );
+}
+
 function Skills() {
   try {
     const [activeCategory, setActiveCategory] = React.useState('Core');
@@ -82,7 +105,14 @@ function Skills() {
     }, []);
 
     return (
-      <section id="skills" className="py-20 px-6" data-name="skills" data-file="components/Skills.js">
+      <section id="skills" className="py-20 px-6 relative overflow-hidden scroll-reveal" data-name="skills" data-file="components/Skills.js">
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.06]"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(96,165,250,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(96,165,250,0.6) 1px, transparent 1px)',
+            backgroundSize: '46px 46px'
+          }}
+        ></div>
         <style>{`
           .skills-category-crossfade {
             transition: opacity 0.28s ease-in-out, transform 0.28s ease-in-out;
@@ -96,56 +126,62 @@ function Skills() {
             transform: translateY(0);
           }
         `}</style>
-        <div className="container mx-auto max-w-6xl">
+        <div className="container mx-auto max-w-6xl relative z-10">
+          <div className="flex justify-center mb-5">
+            <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-blue-500/5 border border-blue-500/10 backdrop-blur-sm">
+              <div className="flex gap-1">
+                <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></div>
+                <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse delay-75"></div>
+                <div className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse delay-150"></div>
+              </div>
+              <span className="text-[10px] font-mono text-blue-400 font-bold uppercase tracking-[0.3em]">Protocol // Skill_Matrix</span>
+            </div>
+          </div>
           <h2 className="text-4xl font-bold text-center mb-16 lofi-text">Technical Expertise</h2>
           
           <div className="flex flex-col lg:flex-row gap-8 items-stretch">
             {/* Column 1: Technical Skills */}
             <div className="flex-[3]">
-              <div className="glassmorphism p-8 md:p-10 lofi-card h-full flex flex-col">
+              <div className="skills-panel p-8 md:p-10 h-full flex flex-col">
+                <span className="skills-corner tl"></span>
+                <span className="skills-corner tr"></span>
+                <span className="skills-corner bl"></span>
+                <span className="skills-corner br"></span>
+
                 <h3 className="text-2xl font-semibold mb-8 text-blue-300 flex items-center gap-3">
                   <div className="icon-brain text-2xl text-blue-400"></div>
                   Technical Skills
                 </h3>
                 
-                <div className="flex flex-wrap justify-start gap-3 mb-10">
+                <div className="flex flex-wrap gap-8 mb-10 border-b border-white/10">
                   {categories.map((cat) => (
                     <button
                       key={cat.id}
                       onClick={() => handleCategoryChange(cat.id)}
-                      className={`px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
-                        activeCategory === cat.id
-                          ? 'bg-blue-600 text-white lofi-glow'
-                          : 'glassmorphism text-gray-400 hover:text-blue-300'
+                      className={`relative pb-3 text-xs font-bold uppercase tracking-widest transition-colors duration-300 ${
+                        activeCategory === cat.id ? 'text-blue-400' : 'text-gray-500 hover:text-gray-300'
                       }`}
                     >
                       {cat.label}
+                      <span
+                        className={`absolute left-0 right-0 -bottom-px h-[2px] bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)] origin-center transition-transform duration-300 ${
+                          activeCategory === cat.id ? 'scale-x-100' : 'scale-x-0'
+                        }`}
+                      ></span>
                     </button>
                   ))}
                 </div>
 
                 <div
-                  className={`space-y-8 flex-1 skills-category-crossfade ${isTransitioning ? 'is-transitioning' : 'is-visible'}`}
+                  className={`space-y-6 flex-1 content-start min-h-[360px] skills-category-crossfade ${isTransitioning ? 'is-transitioning' : 'is-visible'}`}
                 >
                   {skillData[displayCategory].map((skill, index) => (
-                    <div key={`${displayCategory}-${skill.name}`} className="relative">
-                      <div className="flex justify-between items-center mb-2">
-                        <div className="flex items-center gap-3">
-                            <div className={`${skill.icon} text-lg text-blue-400`}></div>
-                            <span className="text-lg font-semibold text-white">{skill.name}</span>
-                        </div>
-                        <span className="text-blue-400 font-mono">{skill.level}%</span>
-                      </div>
-                      <div className="skill-bar w-full bg-slate-800/50 h-2 rounded-full overflow-hidden">
-                        <div
-                          className="skill-progress h-full bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.6)] transition-all duration-1000 ease-out"
-                          style={{ 
-                            width: isVisible && !isTransitioning ? `${skill.level}%` : '0%',
-                            transitionDelay: `${index * 100}ms`
-                          }}
-                        ></div>
-                      </div>
-                    </div>
+                    <SkillRow
+                      key={`${displayCategory}-${skill.name}`}
+                      skill={skill}
+                      index={index}
+                      active={isVisible && !isTransitioning}
+                    />
                   ))}
                 </div>
               </div>
@@ -153,22 +189,25 @@ function Skills() {
 
             {/* Column 2: Developer Toolbox */}
             <div className="flex-[2] flex flex-col gap-8">
-              <div className="glassmorphism p-8 md:p-10 lofi-card h-full flex flex-col">
+              <div className="skills-panel p-8 md:p-10 h-full flex flex-col">
+                <span className="skills-corner tl"></span>
+                <span className="skills-corner tr"></span>
+                <span className="skills-corner bl"></span>
+                <span className="skills-corner br"></span>
+
                 <h3 className="text-2xl font-semibold mb-8 text-blue-300 flex items-center gap-3">
                   <div className="icon-wrench text-2xl text-blue-400"></div>
                   Developer Toolbox
                 </h3>
                 
-                <div className="grid grid-cols-2 gap-4 flex-1 content-start">
-                  {tools.map((tool) => (
-                    <div 
-                      key={tool.name} 
-                      className="flex items-center gap-4 p-4 rounded-xl glassmorphism border border-white/5 hover:border-blue-500/40 hover:bg-white/5 transition-all group"
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-1 content-start">
+                  {tools.map((tool, i) => (
+                    <div
+                      key={tool.name}
+                      className="group glassmorphism flex items-center gap-3 px-4 py-4 border-white/5 hover:border-blue-500/40 transition-all"
                     >
-                      <div className="flex items-center gap-3">
-                        <div className={`${tool.icon} text-xl text-blue-400 group-hover:scale-110 transition-transform`}></div>
-                        <p className="text-gray-300 text-[10px] font-bold uppercase tracking-tight group-hover:text-blue-300 transition-colors">{tool.name}</p>
-                      </div>
+                      <div className={`${tool.icon} text-xl text-blue-400 group-hover:text-blue-300 group-hover:scale-110 transition-all flex-shrink-0`}></div>
+                      <span className="text-gray-200 text-sm font-mono font-bold uppercase tracking-normal group-hover:text-white transition-colors leading-snug">{tool.name}</span>
                     </div>
                   ))}
                 </div>

@@ -58,6 +58,13 @@ function Contact() {
         url: 'https://github.com/Esha-Mirza',
         icon: 'icon-github',
         color: 'text-blue-200'
+      },
+      {
+        label: 'Upwork',
+        value: 'Freelancer Profile',
+        url: 'https://www.upwork.com/freelancers/~01d58e69574b649cd1?mp_source=share',
+        icon: 'icon-pen',
+        color: 'text-blue-300'
       }
     ];
 
@@ -68,7 +75,7 @@ function Contact() {
     };
 
     return (
-      <section id="contact" className="section-spacing relative bg-[#020817]" data-name="contact" data-file="components/Contact.js">
+      <section id="contact" className="section-spacing relative bg-[#020817] scroll-reveal" data-name="contact" data-file="components/Contact.js">
         <style>{`
           #contact input:-webkit-autofill,
           #contact input:-webkit-autofill:hover,
