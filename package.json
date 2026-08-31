@@ -1,0 +1,22 @@
+{
+  "name": "esha-mirza-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Portfolio site for Esha Mirza, AI/ML Engineer.",
+  "scripts": {
+    "build": "node build.mjs",
+    "build:images": "node scripts/optimize-images.mjs",
+    "dev": "node build.mjs --watch --serve"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2",
+    "lucide-static": "^0.516.0",
+    "tailwindcss": "^3.4.19"
+  },
+  "dependencies": {
+    "@fortawesome/free-brands-svg-icons": "^7.3.1",
+    "@fortawesome/react-fontawesome": "^3.5.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}

@@ -1,0 +1,8 @@
+.vscode/
+node_modules/
+.env
+.DS_Store
+Thumbs.db
+
+# Build artefacts are committed on purpose: GitHub Pages serves this repo as-is
+# and has no build step, so dist/ and index.html must be present in the branch.
