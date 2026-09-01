@@ -242,7 +242,7 @@ function Hero() {
             </div>
 
             <div className="grid lg:grid-cols-12 gap-6 md:gap-8 items-stretch">
-              <div className="lg:col-span-7 relative group slide-left reveal-delay-2" style={{ perspective: '2000px' }}>
+              <div className="lg:col-span-7 relative group slide-left reveal-delay-2 overflow-hidden" style={{ perspective: '2000px' }}>
                 <div className="relative h-full transition-transform duration-700 ease-in-out" style={{ transformStyle: 'preserve-3d', transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)' }}>
                   <div className="h-full glassmorphism overflow-hidden border-white/5 group-hover:border-blue-500/20 transition-all duration-500 shimmer-border" style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}>
                     <div className="bg-slate-900/40 px-5 py-3 flex items-center justify-between border-b border-white/5">

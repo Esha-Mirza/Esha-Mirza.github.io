@@ -521,6 +521,7 @@ function Certifications() {
             .cert-header {
               align-items: flex-start;
               flex-direction: column;
+              gap: 16px;
             }
 
             .cert-grid {

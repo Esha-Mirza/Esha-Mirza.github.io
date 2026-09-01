@@ -177,7 +177,7 @@ function Contact() {
             </div>
 
             <div className="flex-[1.4] bg-[#020617] p-8 md:p-12 flex flex-col">
-              <div className="flex items-center justify-between mb-10">
+              <div className="flex flex-wrap items-center justify-between gap-3 mb-10">
                 <h3 className="text-lg font-bold text-white flex items-center gap-3">
                   <div className="icon-terminal text-blue-600 transition-transform duration-300 hover:scale-110"></div>
                   Input_Protocol.v1

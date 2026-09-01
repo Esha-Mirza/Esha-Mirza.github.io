@@ -92,6 +92,13 @@ body::before {
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+#root {
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .glassmorphism {
@@ -190,6 +197,12 @@ button:focus {
 
 .section-spacing {
   padding: 80px 20px;
+}
+
+@media (max-width: 767px) {
+  .section-spacing {
+    padding: 48px 16px;
+  }
 }
 
 .content-box {
