@@ -67,16 +67,24 @@ function Contact() {
         label: 'Upwork',
         value: 'Esha M.',
         url: 'https://www.upwork.com/freelancers/~01d58e69574b649cd1?mp_source=share',
-        icon: <FontAwesomeIcon icon={faUpwork} />,
+        icon: faUpwork,
         color: 'text-blue-300'
       }
     ];
+
+    {contactInfo.map((item) => (
+  <a href={item.url} key={item.label}>
+    <FontAwesomeIcon icon={item.icon} />
+    {item.label}
+  </a>
+))}
 
     const handleAutoFill = (field) => (e) => {
       if (e.animationName === 'onAutoFillStart') {
         setFormData((prev) => ({ ...prev, [field]: e.target.value }));
       }
     };
+    
 
     return (
       <section id="contact" className="section-spacing relative bg-[#020817] scroll-reveal">
@@ -129,7 +137,11 @@ function Contact() {
                       style={{ transitionDelay: '120ms' }}
                     >
                       <div className="w-10 h-10 rounded bg-blue-950/50 flex items-center justify-center border border-blue-900/50 group-hover:border-blue-600 group-hover:bg-blue-900/30 transition-all duration-300">
-                        <div className={`${info.icon} text-lg ${info.color} transition-transform duration-300 group-hover:scale-110`}></div>
+                        {info.label === 'Upwork' ? (
+                          <FontAwesomeIcon icon={info.icon} className={`text-lg ${info.color} transition-transform duration-300 group-hover:scale-110`} />
+                        ) : (
+                          <div className={`${info.icon} text-lg ${info.color} transition-transform duration-300 group-hover:scale-110`}></div>
+                        )}
                       </div>
                       <div>
                         <p className="text-[10px] uppercase font-bold text-blue-700 tracking-tighter leading-none mb-1 transition-colors duration-300 group-hover:text-blue-500">{info.label}</p>
@@ -139,7 +151,11 @@ function Contact() {
                   ) : (
                     <a key={info.label} href={info.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group scroll-reveal" style={{ transitionDelay: '120ms' }}>
                       <div className="w-10 h-10 rounded bg-blue-950/50 flex items-center justify-center border border-blue-900/50 group-hover:border-blue-600 group-hover:bg-blue-900/30 transition-all duration-300">
-                        <div className={`${info.icon} text-lg ${info.color} transition-transform duration-300 group-hover:scale-110`}></div>
+                        {info.label === 'Upwork' ? (
+                          <FontAwesomeIcon icon={info.icon} className={`text-lg ${info.color} transition-transform duration-300 group-hover:scale-110`} />
+                        ) : (
+                          <div className={`${info.icon} text-lg ${info.color} transition-transform duration-300 group-hover:scale-110`}></div>
+                        )}
                       </div>
                       <div>
                         <p className="text-[10px] uppercase font-bold text-blue-700 tracking-tighter leading-none mb-1 transition-colors duration-300 group-hover:text-blue-500">{info.label}</p>

@@ -1,4 +1,6 @@
 import React from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUpwork } from '@fortawesome/free-brands-svg-icons';
 
 const RING_SIZE = 52;
 const RING_STROKE = 3;
@@ -137,7 +139,7 @@ function Footer() {
               </a>
               <a href="https://www.upwork.com/freelancers/~01d58e69574b649cd1?mp_source=share" target="_blank" rel="noopener noreferrer"
                  className="w-10 h-10 rounded-lg glassmorphism flex items-center justify-center text-slate-400 hover:text-blue-400 hover:border-blue-500/50 transition-all duration-300 hover:scale-110 hover:shadow-[0_0_15px_rgba(59,130,246,0.2)]">
-                <div className="icon-pen text-xl transition-transform duration-300"></div>
+                <FontAwesomeIcon icon={faUpwork} className="text-xl transition-transform duration-300" />
               </a>
               <a onClick={() => {
                  window.open('https://mail.google.com/mail/?view=cm&fs=1&to=esha101374@gmail.com&su=AI/ML%20Collaboration','_blank');}}
