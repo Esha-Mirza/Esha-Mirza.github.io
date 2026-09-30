@@ -1,4 +1,4 @@
-# Esha Mirza, portfolio
+# Esha Mirza, Portfolio
 
 AI/ML engineer portfolio. Static site, no backend, deployed straight from this
 repository with GitHub Pages.
